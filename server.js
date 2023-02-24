@@ -1,9 +1,24 @@
-const express = require('express');;  //store express module in a const
-const app = express(); //initialize express app
+const express = require("express")
+const app = express()
+const seed = require("./seed")
 
-const port = 3000; //set port to 3000
+const userRouter = require("./routes/userRoutes")
+//const showsRouter = require("./routes/shows")
+const port = 3000
 
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
+app.use("/users", userRouter)
+//app.use("/shows", showsRouter)
 
-app.listen(port, () => {console.log(`app listening at http://localhost: ${port}`)}); //listen on port 3000 and log to console
+// Load the items in the database
+seed()
 
+//homepage
+app.get('/', (req, res) => {
+    res.send(`HOME PAGE!`)
+})
 
+app.listen(port, () => {
+    console.log(`App listening at http://localhost:${port}`)
+})
